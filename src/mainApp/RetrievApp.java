@@ -1,12 +1,14 @@
 package mainApp;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import emplyees.Employee;
 
-public class App {
+public class RetrievApp {
 
 	public static void main(String[] args) {
 	SessionFactory factory =new Configuration()
@@ -18,13 +20,21 @@ public class App {
 	
 	try {
 		
-		Employee emp1=new Employee("All","Pacino","Donkey");
-		Employee emp2=new Employee("Luu","Foo","Donkey");
-		Employee emp3=new Employee("Vegas","Mary","Burger");
+		int employeeId=1;
 		session.beginTransaction();
-		session.save(emp1);
-		session.save(emp2);
-		session.save(emp3);
+		
+		Employee theOne= session.get(Employee.class, employeeId);
+		System.out.println(theOne);
+
+		List<Employee> employees=
+				session
+				.createQuery("from Employee")
+				.getResultList();
+		
+		for(Employee theEmployee:employees) {
+		System.out.println(theEmployee);
+		}
+		
 		session.getTransaction().commit();
 		
 		
